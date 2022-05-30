@@ -7,6 +7,10 @@ from odoo import models, fields
 
 
 class ResUsers(models.Model):
-    _inherit = "res.users"
+    _inherit = 'res.users'
 
-    location_id = fields.Many2one("openg2p.location", string="Location", index=True)
+    location_id = fields.Many2one(
+        'openg2p.location',
+        string="Location",
+        index=True
+    )
