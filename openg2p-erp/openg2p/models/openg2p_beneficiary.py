@@ -32,7 +32,8 @@ class Beneficiary(models.Model):
     _description = "Beneficiary"
     _order = 'name'
     _inherit = [
-        'format.address.mixin', 'mail.thread', 'mail.activity.mixin', 'generic.mixin.no.unlink',
+        'format.address.mixin', 'mail.thread', 'mail.activity.mixin', 
+        # 'generic.mixin.no.unlink',
         'phone.validation.mixin', 'openg2p.mixin.has_document', 'openg2p.mixin.no_copy', 'openg2p.mixin.no_name_create'
     ]
 
@@ -49,19 +50,19 @@ class Beneficiary(models.Model):
         help='Partner-related data of the beneficiary'
     )
     firstname = fields.Char(
-        track_visibility='onchange',
+        tracking=True,
         index=True,
         required=True,
         string="First Name"
     )
     lastname = fields.Char(
-        track_visibility='onchange',
+        tracking=True,
         index=True,
         required=True,
         string="Last Name"
     )
     othernames = fields.Char(
-        track_visibility='onchange',
+        tracking=True,
         index=True,
         string="Other Names"
     )
@@ -89,19 +90,19 @@ class Beneficiary(models.Model):
         index=True
     )
     street = fields.Char(
-        track_visibility='onchange',
+        tracking=True,
         required=True
     )
     street2 = fields.Char(
-        track_visibility='onchange'
+        tracking=True
     )
     zip = fields.Char(
-        track_visibility='onchange',
+        tracking=True,
         change_default=True,
         index=True
     )
     city = fields.Char(
-        track_visibility='onchange',
+        tracking=True,
         required=True,
         string="City/Town"
     )
@@ -110,19 +111,19 @@ class Beneficiary(models.Model):
         string='State/District',
         ondelete='restrict',
         domain="[('country_id', '=', country_id)]",
-        track_visibility='onchange',
+        tracking=True,
         required=True,
     )
     country_id = fields.Many2one(
         'res.country',
         string='Country',
         ondelete='restrict',
-        track_visibility='onchange',
+        tracking=True,
         required=True,
         default=lambda self: self.env.user.company_id.country_id.id
     )
     email = fields.Char(
-        track_visibility='onchange'
+        tracking=True
     )
     email_formatted = fields.Char(
         'Formatted Email',
@@ -130,19 +131,19 @@ class Beneficiary(models.Model):
         help='Format email address "Name <email@domain>"'
     )
     phone = fields.Char(
-        track_visibility='onchange',
+        tracking=True,
         string="Primary Phone",
         index=True
     )
     mobile = fields.Char(
-        track_visibility='onchange',
+        tracking=True,
         string="Secondary Phone",
         index=True
     )
     active = fields.Boolean(
         default=True,
         readonly=True,
-        track_visibility='onchange',
+        tracking=True,
     )
     display_address = fields.Char(
         compute="_compute_display_address",
@@ -160,7 +161,7 @@ class Beneficiary(models.Model):
         ],
         string='Marital Status',
         default='single',
-        track_visibility='onchange'
+        tracking=True
     )
     gender = fields.Selection(
         [
@@ -168,29 +169,29 @@ class Beneficiary(models.Model):
             ('female', 'Female'),
             ('other', 'Other')
         ],
-        track_visibility='onchange',
+        tracking=True,
         required=True
     )
     birth_city = fields.Char(
-        track_visibility='onchange'
+        tracking=True
     )
     birth_state_id = fields.Many2one(
         comodel_name='res.country.state',
         string='Birth State/District',
         domain="[('country_id', '=', birth_country_id)]",
         ondelete='restrict',
-        track_visibility='onchange'
+        tracking=True
     )
     birth_country_id = fields.Many2one(
         comodel_name='res.country',
         string='Birth Country',
         ondelete='restrict',
         default=lambda self: self.env.user.company_id.country_id.id,
-        track_visibility='onchange'
+        tracking=True
     )
     birthday = fields.Date(
         "Birth Date",
-        track_visibility='onchange'
+        tracking=True
     )
     age = fields.Integer(
         string="Age",
@@ -201,12 +202,12 @@ class Beneficiary(models.Model):
         comodel_name='openg2p.beneficiary.id_number',
         inverse_name='beneficiary_id',
         string="Identifications",
-        track_visibility='onchange',
+        tracking=True,
         index=True
     )
     national_id = fields.Char(
         string='National ID',
-        track_visibility='onchange',
+        tracking=True,
         compute=lambda s: s._compute_identification(
             'national_id', 'NIN',
         ),
@@ -221,7 +222,7 @@ class Beneficiary(models.Model):
     )
     passport_id = fields.Char(
         string='Passport No',
-        track_visibility='onchange',
+        tracking=True,
         compute=lambda s: s._compute_identification(
             'passport_id', 'PASSPORT',
         ),
@@ -236,7 +237,7 @@ class Beneficiary(models.Model):
     )
     ssn = fields.Char(
         string='Social Security #',
-        track_visibility='onchange',
+        tracking=True,
         compute=lambda s: s._compute_identification(
             'ssn', 'SSN',
         ),
@@ -251,17 +252,17 @@ class Beneficiary(models.Model):
     )
     emergency_contact = fields.Char(
         "Emergency Contact",
-        track_visibility='onchange'
+        tracking=True
     )
     emergency_phone = fields.Char(
         "Emergency Phone",
-        track_visibility='onchange'
+        tracking=True
     )
     # image: all image fields are base64 encoded and PIL-supported
     image = fields.Binary(
         "Image",
         default=_default_image,
-        track_visibility='onchange',
+        tracking=True,
         attachment=True,
         help="This field holds the image used as avatar for this beneficiary, limited to 1024x1024px"
     )
@@ -283,14 +284,14 @@ class Beneficiary(models.Model):
         'openg2p.location',
         'Location',
         index=True,
-        track_visibility='onchange',
+        tracking=True,
         ondelete='restrict',
         required=True
     )
     category_id = fields.Many2many(
         'openg2p.beneficiary.category',
         string="Tags",
-        track_visibility='onchange',
+        tracking=True,
         index=True
     )
     search_no_category_id = fields.Many2one(
@@ -365,7 +366,7 @@ class Beneficiary(models.Model):
         self._partner_create(vals)
         return super(Beneficiary, self).create(vals)
 
-    @api.multi
+    
     def write(self, vals):
         tools.image_resize_images(vals)
         res = super(Beneficiary, self).write(vals)
@@ -402,7 +403,7 @@ class Beneficiary(models.Model):
         """Returns the list of address fields usable to format addresses."""
         return self._address_fields()
 
-    @api.multi
+    
     def update_address(self, vals):
         addr_vals = {key: vals[key] for key in self._address_fields() if key in vals}
         if addr_vals:
@@ -422,7 +423,7 @@ class Beneficiary(models.Model):
         for beneficiary in self:
             beneficiary.display_name = names.get(beneficiary.id)
 
-    @api.multi
+    
     @api.depends("birthday")
     def _compute_age(self):
         for record in self:
@@ -445,7 +446,7 @@ class Beneficiary(models.Model):
         for rec in self:
             rec.search_no_category_id = False
 
-    @api.multi
+    
     @api.depends('street', 'street2', 'zip', 'city', 'state_id', 'country_id', 'country_id.address_format',
                  'country_id.code', 'country_id.name', 'state_id.code', 'state_id.name')
     def _compute_display_address(self):
@@ -460,7 +461,7 @@ class Beneficiary(models.Model):
     def _get_address_format(self):
         return self.country_id.address_format or self._get_default_address_format()
 
-    @api.multi
+    
     def _display_address(self):
 
         '''
@@ -512,11 +513,11 @@ class Beneficiary(models.Model):
                     state = States.search(state_domain, limit=1)
                     vals['state_id'] = state.id  # replace state or remove it if not found
 
-    @api.multi
+    
     def _get_country_name(self):
         return self.country_id.name or ''
 
-    @api.multi
+    
     def name_get(self):
         return [(record.id, record.name + ' (' + record.ref + ')') for record in self]
 
@@ -527,7 +528,7 @@ class Beneficiary(models.Model):
             'template': '/openg2p/static/xls/openg2p_beneficiary.xls'
         }]
 
-    @api.multi
+    
     @api.depends('identities', 'identities.name', 'identities.category_id.code.')
     def _compute_identification(self, field_name, category_code):
         """ Compute a field that indicates a certain ID type.
@@ -567,7 +568,7 @@ class Beneficiary(models.Model):
             value = identities[0].name
             record[field_name] = value
 
-    @api.multi
+    
     def _inverse_identification(self, field_name, category_code):
         """ Inverse for an identification field.
 
@@ -737,7 +738,7 @@ class Beneficiary(models.Model):
         """
         pass
 
-    @api.multi
+    
     def merge(self, merges, copy_data={}):
         """
         @param merges - A recordset of beneficiaries we want to merge

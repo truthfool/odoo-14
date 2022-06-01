@@ -6,6 +6,8 @@
                 binding_model="openg2p.beneficiary"
                 res_model="beneficiary.enroll.wizard"
                 view_mode="form"
+                binding_views="form"
+                target="new"
                 groups="openg2p.group_openg2p_officer"/>
 
     <!-- wizard view -->

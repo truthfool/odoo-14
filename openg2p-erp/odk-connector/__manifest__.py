@@ -8,7 +8,7 @@
         "base",
         "web",
         "mail",
-        "openg2p_program",
+        # "openg2p_program",
     ],
     "data": [
         "security/ir.model.access.csv",

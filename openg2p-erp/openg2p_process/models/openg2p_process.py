@@ -64,7 +64,7 @@ class Openg2pProcess(models.Model):
             if rec.curr_process_stage.id:
                 try:
                     rec.curr_process_stage_index = (
-                            rec.process_type.stages.ids.index(rec.curr_process_stage.id) + 1
+                        rec.process_type.stages.ids.index(rec.curr_process_stage.id) + 1
                     )
                 except BaseException as e:
                     print(e)
@@ -97,8 +97,6 @@ class Openg2pProcess(models.Model):
             obj_ids = [obj_ids]
         context[event_code] = json.dumps(obj_ids)
         self.context = json.dumps(context, indent=2)
-        # Sending notification
-        self.env["openg2p.webhook"].create_notification(self, event_code, obj_ids)
 
     def _update_task_list(self, task_id):
         context = json.loads(self.context)
@@ -107,30 +105,21 @@ class Openg2pProcess(models.Model):
         context["tasks"] = json.dumps(tasks)
         self.context = json.dumps(context, indent=2)
 
-    def update_curr_stage(self, event_code=None):
-        if event_code:
-            latest_event_id = self.get_id_from_ext_id(event_code)
-            for idx, stage in enumerate(self.process_type.stages):
-                if stage.task_subtype_id.id == latest_event_id:
-                    self.curr_process_stage_index = idx + 1
-                    self.curr_process_stage = self.process_type.stages[
-                        self.curr_process_stage_index
-                    ].id
-        else:
-            ext_ids = list(
-                map(
-                    lambda x: self.get_ext_id_from_id(
-                        "openg2p.task.subtype", x.task_subtype_id.id
-                    ),
-                    self.process_type.stages,
+    def update_curr_stage(self):
+        ext_ids = list(
+            map(
+                lambda x: self.get_ext_id_from_id(
+                    "openg2p.task.subtype", x.task_subtype_id.id
                 ),
-            )
-            context = json.loads(self.context)
-            for idx, ext_id in enumerate(ext_ids):
-                if ext_id not in context:
-                    self.curr_process_stage_index = idx + 1
-                    self.curr_process_stage = self.process_type.stages[idx].id
-                    break
+                self.process_type.stages,
+            ),
+        )
+        context = json.loads(self.context)
+        for idx, ext_id in enumerate(ext_ids):
+            if ext_id not in context:
+                self.curr_process_stage_index = idx + 1
+                self.curr_process_stage = self.process_type.stages[idx].id
+                break
 
     # handles intermediate automated tasks
     def handle_intermediate_task(self):
@@ -138,7 +127,6 @@ class Openg2pProcess(models.Model):
         task_code = self.get_ext_id_from_id(
             "openg2p.task.subtype", self.curr_process_stage.task_subtype_id.id
         )
-        success = True
         if task_code == "task_subtype_regd_make_beneficiary":
             regd_ids = json.loads(context["task_subtype_regd_create"])
             bene_ids = []
@@ -156,13 +144,12 @@ class Openg2pProcess(models.Model):
             benes = self.env["openg2p.beneficiary"].browse(
                 json.loads(context["task_subtype_beneficiary_create"])
             )
-            for prog_id in odk_config.program_ids.ids:
-                benes.program_enroll(
-                    program_id=prog_id,
-                    date_start=odk_config.program_enroll_date,
-                    confirm=True,
-                )
-            prog_ids = list(odk_config.program_ids.ids)
+            benes.program_enroll(
+                program_id=odk_config.program_id.id,
+                date_start=odk_config.program_enroll_date,
+                confirm=True,
+            )
+            prog_ids = [odk_config.program_id.id]
             self._update_context("task_subtype_beneficiary_enroll_programs", prog_ids)
         elif task_code == "task_subtype_beneficiary_create_disbursement_batch":
             context = json.loads(self.context)
@@ -178,7 +165,23 @@ class Openg2pProcess(models.Model):
                     "task_subtype_beneficiary_create_disbursement_batch", batch_ids
                 )
         self.update_curr_stage()
-        return success
+
+    def update_completed_task(self, task):
+        task.status_id = 3
+        self.create_next_task()
+
+    def create_next_task(self):
+        context = json.loads(self.context)
+        prev_task_entity_id = json.loads(list(dict(context).values())[-1])[-1]
+        next_task = self.env["openg2p.task"].create(
+            {
+                "subtype_id": self.curr_process_stage.task_subtype_id.id,
+                "process_id": self.id,
+                "status_id": 2,
+                "entity_id": prev_task_entity_id,
+            }
+        )
+        self._update_task_list(next_task.id)
 
     # receiver of event notifications
     def handle_tasks(self, events, process=None):
@@ -194,7 +197,7 @@ class Openg2pProcess(models.Model):
             for event in events:
                 event_code, obj_ids = event
                 process._update_context(event_code, obj_ids)
-            process.update_curr_stage(events[-1][0])
+            process.update_curr_stage()
             return
 
         # find task that is done
@@ -205,18 +208,14 @@ class Openg2pProcess(models.Model):
         if task and len(task) > 0:
             task = task[0]
             # find process for the task
-            try:
-                process = self.env["openg2p.process"].search([("id", "=", task.process_id)])
-            except BaseException as e:
-                print(e)
-                return
+            process = self.env["openg2p.process"].search([("id", "=", task.process_id)])
             if process and len(process) > 0:
                 process = process[0]
                 assert isinstance(process, self.__class__)
                 for event in events:
                     event_code, obj_ids = event
                     process._update_context(event_code, obj_ids)
-                process.update_curr_stage(events[-1][0])
+                process.update_curr_stage()
                 process.handle_intermediate_task()
             try:
                 stages = self.env["openg2p.process.stage"].search(
@@ -225,27 +224,15 @@ class Openg2pProcess(models.Model):
                 if process.curr_process_stage_index != len(stages):
                     prev_task_idx = process.curr_process_stage_index
                     while (
-                            process.curr_process_stage.intermediate
-                            and process.curr_process_stage.automated
+                        process.curr_process_stage.intermediate
+                        and process.curr_process_stage.automated
                     ):
                         process.handle_intermediate_task()
                         if process.curr_process_stage_index == prev_task_idx:
                             break
                         else:
                             prev_task_idx = process.curr_process_stage_index
-                    task.status_id = 3
-                    # task.context = json.dumps({
-                    #     "id": task.entity_id,
-                    #     "datetime": str(task.write_date)
-                    # })
-                    next_task = self.env["openg2p.task"].create(
-                        {
-                            "subtype_id": process.curr_process_stage.task_subtype_id.id,
-                            "process_id": process.id,
-                            "status_id": 2,
-                        }
-                    )
-                    process._update_task_list(next_task.id)
+                    process.update_completed_task(task)
                 else:
                     process.process_completed = True
             except BaseException as e:

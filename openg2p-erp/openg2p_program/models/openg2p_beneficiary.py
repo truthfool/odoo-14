@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo.addons.queue_job.job import job
+# from odoo.addons.queue_job.job import job
 from odoo import api, fields, models
 
 
@@ -12,7 +12,7 @@ class Beneficiary(models.Model):
         string="Active Programs",
         help="Active programs enrolled to",
         readonly=True,
-        track_visibility="onchange",
+        tracking=True,
         compute="_compute_active_programs",
         store=True,
     )
@@ -20,14 +20,14 @@ class Beneficiary(models.Model):
         "openg2p.program.enrollment",
         "beneficiary_id",
         string="Enrollment History",
-        track_visibility="onchange",
+        tracking=True,
     )
     program_enrollments_count = fields.Integer(
         compute="_compute_program_enrollments_count", string="Enrollment Count"
     )
 
-    @
-    @job
+    
+    # @job
     def program_enroll(
         self,
         program_id,
@@ -47,9 +47,6 @@ class Beneficiary(models.Model):
                     "date_start": date_start,
                 }
             )
-            # self.env["openg2p.task"].create_task_from_notification(
-            #     "beneficiary_enroll", rec.id
-            # )
         if confirm:
             regs.action_activate()
 
@@ -71,7 +68,7 @@ class Beneficiary(models.Model):
         for beneficiary in self:
             beneficiary.program_enrollments_count = result.get(beneficiary.id, 0)
 
-    @
+    
     @api.depends("program_enrollment_ids", "program_enrollment_ids.state")
     def _compute_active_programs(self):
         for record in self:

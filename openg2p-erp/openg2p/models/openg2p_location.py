@@ -23,7 +23,7 @@ class Location(models.Model):
         'Location Name',
         required=True,
         index=True,
-        track_visibility='onchange'
+        tracking=True
     )
     complete_name = fields.Char(
         'Complete Name',
@@ -32,7 +32,7 @@ class Location(models.Model):
     )
     active = fields.Boolean(
         default=True,
-        track_visibility='onchange'
+        tracking=True
     )
     company_id = fields.Many2one(
         'res.company',
@@ -44,7 +44,7 @@ class Location(models.Model):
         'openg2p.location',
         string='Parent Location',
         index=True,
-        track_visibility='onchange'
+        tracking=True
     )
     child_ids = fields.One2many(
         'openg2p.location',
@@ -64,7 +64,7 @@ class Location(models.Model):
         'res.users',
         string='Manager',
         index=True,
-        track_visibility='onchange'
+        tracking=True
     )
     note = fields.Text(
         'Note'

@@ -26,21 +26,6 @@
             </field>
         </record>
 
-<!--       <record id="openg2p_registration_view_tree_activity" model="ir.ui.view">-->
-<!--           <field name="name">openg2p.registration.view.tree.activity</field>-->
-<!--           <field name="model">openg2p.registration</field>-->
-<!--           <field name="arch" type="xml">-->
-<!--               <tree string="Next Activities" decoration-danger="activity_date_deadline &lt; current_date"-->
-<!--                     default_order="activity_date_deadline" multi_edit="1">-->
-<!--                   <field name="name"/>-->
-<!--                   <field name="activity_date_deadline"/>-->
-<!--                   <field name="activity_type_id"/>-->
-<!--                   <field name="activity_summary"/>-->
-<!--                   <field name="stage_id"/>-->
-<!--               </tree>-->
-<!--           </field>-->
-<!--        </record>-->
-
         <record model="ir.ui.view" id="crm_case_form_view_beneficiary">
             <field name="name">Beneficiaries - Registration Form</field>
             <field name="model">openg2p.registration</field>
@@ -131,11 +116,9 @@
                                 <field name="grand_total" string="Grand Total (LE)"/>
                             </group>
                             <group>
-<!--                                <field name="othernames"/>-->
                                 <field name="phone" widget="phone"/>
                                 <field name="mobile" widget="phone"/>
                                 <field name="email" widget="email" context="{'gravatar_image': True}"/>
-<!--                                <field name="title" options='{"no_open": True}'/>-->
                                 <field name="lang"/>
                             </group>
                             <group>
@@ -144,19 +127,14 @@
                                 <field name="create_date"/>
                                 <field name="registered_date"/>
                             </group>
-<!--                            <group string="Personal">-->
-<!--                                <field name="gender"/>-->
-<!--                                <field name="marital"/>-->
-<!--                                <field name="emergency_contact"/>-->
-<!--                                <field name="emergency_phone"/>-->
-<!--                                <field name="birthday"/>-->
-<!--                            </group>-->
 
                             <group string="Identifications">
                                 <field name="identities" nolabel="1">
                                     <tree string="Identifications" editable="bottom">
                                         <field name="type" string="ID Type"/>
                                         <field name="name"  string="ID Number"/>
+                                        <field name="status"  string="Status"/>
+                                        <field name="message"  string="Message"/>
                                     </tree>
                                 </field>
                             </group>
@@ -211,7 +189,10 @@
                 name="Update Records"
                 binding_model="openg2p.registration"
                 res_model="openg2p.registration.update_regd"
+                view_type="tree" 
                 view_mode="form"
+                binding_views="list" 
+                target="fullscreen"
                 groups="openg2p_registration.group_openg2p_registration_user"/>
 
         <record id="wizard_view" model="ir.ui.view">
@@ -475,7 +456,7 @@
         <record model="ir.actions.act_window" id="openg2p_registration_document">
             <field name="name">Document</field>
             <field name="res_model">ir.attachment</field>
-            <field name="view_type">form</field>
+            <!-- <field name="view_type">form</field> -->
             <field name="view_mode">kanban,tree,form</field>
             <field name="view_id" ref="mail.view_document_file_kanban"/>
             <field name="domain">[('res_model', '=', 'openg2p.registration')]</field>
@@ -572,7 +553,7 @@
         <record id="openg2p_registration_action_analysis" model="ir.actions.act_window">
             <field name="name">Registration Analysis</field>
             <field name="res_model">openg2p.registration</field>
-            <field name="view_type">form</field>
+            <!-- <field name="view_type">form</field> -->
             <field name="view_mode">graph,pivot</field>
             <field name="search_view_id" ref="openg2p_registration_view_search"/>
             <field name="view_ids" eval="[
@@ -586,7 +567,7 @@
         <record id="action_openg2p_registration_report_filtered_location" model="ir.actions.act_window">
             <field name="name">Registration Analysis</field>
             <field name="res_model">openg2p.registration</field>
-            <field name="view_type">form</field>
+            <!-- <field name="view_type">form</field> -->
             <field name="view_mode">graph,pivot</field>
             <field name="search_view_id" ref="openg2p_registration_view_search"/>
             <field name="context">{
