@@ -27,7 +27,7 @@ load_dotenv()  # for python-dotenv method
 class BatchTransaction(models.Model):
     _name = "openg2p.disbursement.batch.transaction"
     _description = "Disbursement Batch"
-    _inherit = ["generic.mixin.no.unlink", "mail.thread", "openg2p.mixin.has_document"]
+    _inherit = ["mail.thread", "openg2p.mixin.has_document"]
     allow_unlink_domain = [("state", "=", "draft")]
 
     name = fields.Char(

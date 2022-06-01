@@ -96,7 +96,7 @@
         <record id="wizard_batch" model="ir.ui.view">
             <field name="name">bulk_transfer_detailed_status</field>
             <field name="model">openg2p.disbursement.batch.transaction.wizard</field>
-            <field name="target">inline</field>
+            <!-- <field name="target">inline</field> -->
             <field name="arch" type="xml">
                 <form>
                     <group>

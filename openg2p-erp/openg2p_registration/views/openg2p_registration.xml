@@ -185,7 +185,7 @@
             </field>
         </record>
 
-        <act_window id="action_update_regd"
+        <!-- <act_window id="action_update_regd"
                 name="Update Records"
                 binding_model="openg2p.registration"
                 res_model="openg2p.registration.update_regd"
@@ -193,12 +193,12 @@
                 view_mode="form"
                 binding_views="list" 
                 target="fullscreen"
-                groups="openg2p_registration.group_openg2p_registration_user"/>
+                groups="openg2p_registration.group_openg2p_registration_user"/> -->
 
         <record id="wizard_view" model="ir.ui.view">
             <field name="name">Bulk Update Registrations</field>
             <field name="model">openg2p.registration.update_regd</field>
-            <field name="target">inline</field>
+            <!-- <field name="target">inline</field> -->
             <field name="arch" type="xml">
                 <form>
                     <group>

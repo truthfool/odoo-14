@@ -28,7 +28,9 @@ def validate_mobile_money(number):
 class ResPartnerBank(models.Model):
     _name = "res.partner.bank"
     _rec_name = "name"
-    _inherit = ["res.partner.bank", "mail.thread", "generic.mixin.no.unlink"]
+    _inherit = [
+        "res.partner.bank",
+        "mail.thread"]
 
     _allow_unlink_domain = [("state", "=", "draft")]
 

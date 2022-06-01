@@ -16,7 +16,7 @@ _logger = logging.getLogger(__name__)
 class SingleTransaction(models.Model):
     _name = "openg2p.disbursement.single.transaction"
     _description = "Single Transaction"
-    _inherit = ["generic.mixin.no.unlink", "mail.thread", "openg2p.mixin.has_document"]
+    _inherit = ["mail.thread", "openg2p.mixin.has_document"]
     allow_unlink_domain = [("state", "=", "draft")]
 
     bank_account_id = fields.Many2one(

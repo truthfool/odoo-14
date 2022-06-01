@@ -55,8 +55,7 @@
             <field name="firstname">Salton</field>
             <field name="othernames">Arthur</field>
             <field name="lastname">Massally</field>
-            <field eval="[(6, 0, [ref('openg2p_beneficiary_category_0'), ref('openg2p_beneficiary_category_2')])]"
-                   name="category_id"/>
+            <field eval="[(6, 0, [ref('openg2p_beneficiary_category_0'), ref('openg2p_beneficiary_category_2')])]" name="category_id"/>
             <field name="street">5 Foday Drive</field>
             <field name="street2">Hill Station</field>
             <field name="city">Freetown</field>
@@ -103,8 +102,7 @@
         <record id="openg2p_beneficiary_3" model="openg2p.beneficiary">
             <field name="firstname">Gianna</field>
             <field name="lastname">Bryant</field>
-            <field eval="[(6, 0, [ref('openg2p_beneficiary_category_8'), ref('openg2p_beneficiary_category_0')])]"
-                   name="category_id"/>
+            <field eval="[(6, 0, [ref('openg2p_beneficiary_category_8'), ref('openg2p_beneficiary_category_0')])]" name="category_id"/>
             <field name="street">1128 Lunetta Street</field>
             <field name="city">Tampa</field>
             <field name="state_id" ref="state_sl"/>
@@ -128,8 +126,7 @@
         <record id="openg2p_beneficiary_4" model="openg2p.beneficiary">
             <field name="firstname">Steph</field>
             <field name="lastname">Curry</field>
-            <field eval="[(6, 0, [ref('openg2p_beneficiary_category_0'), ref('openg2p_beneficiary_category_2')])]"
-                   name="category_id"/>
+            <field eval="[(6, 0, [ref('openg2p_beneficiary_category_0'), ref('openg2p_beneficiary_category_2')])]" name="category_id"/>
             <field name="street">92 Emily Drive</field>
             <field name="city">Columbia</field>
             <field name="state_id" ref="state_sl"/>

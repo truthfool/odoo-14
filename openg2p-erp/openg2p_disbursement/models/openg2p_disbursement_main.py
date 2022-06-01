@@ -14,7 +14,7 @@ import requests
 class DisbursementMain(models.Model):
     _name = "openg2p.disbursement.main"
     _description = "Disbursement Main Transaction"
-    _inherit = ["generic.mixin.no.unlink", "mail.thread", "openg2p.mixin.has_document"]
+    _inherit = ["mail.thread", "openg2p.mixin.has_document"]
 
     batch_id = fields.Many2one(
         "openg2p.disbursement.batch.transaction", "Batch", required=True
