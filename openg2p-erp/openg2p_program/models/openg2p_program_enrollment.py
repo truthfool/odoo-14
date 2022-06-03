@@ -72,9 +72,7 @@ class ProgramEnrollment(models.Model):
             "draft": [("readonly", False)]
         },  # we seem to need this to have our demo data change the state
     )
-    company_id = fields.Many2one(
-        "res.company", default=lambda self: self.env.company
-    )
+    company_id = fields.Many2one("res.company", default=lambda self: self.env.company)
     currency_id = fields.Many2one(
         string="Currency", related="company_id.currency_id", readonly=True
     )
@@ -82,7 +80,6 @@ class ProgramEnrollment(models.Model):
     def action_activate(self):
         self.write({"state": "open"})
 
-    
     def toggle_active(self):
         for rec in self:
             if not rec.active and not rec.date_end:
@@ -140,7 +137,6 @@ class ProgramEnrollment(models.Model):
         ).write({"state": "close"})
         return True
 
-    
     def _track_subtype(self, init_values):
         self.ensure_one()
         if "state" in init_values and self.state == "close":

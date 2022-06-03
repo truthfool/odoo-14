@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <!-- <data> -->
+    <data>
         <menuitem
                 name="Registration"
                 id="menu_openg2p_registration_root"
@@ -12,5 +12,5 @@
                   sequence="100"/>
 
 
-    <!-- </data> -->
+    </data>
 </odoo>

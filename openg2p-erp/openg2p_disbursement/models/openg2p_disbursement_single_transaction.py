@@ -2,6 +2,7 @@ import json
 import requests
 import logging
 import uuid
+
 # import odoo.addons.decimal_precision as dp
 from datetime import date, datetime
 
@@ -99,7 +100,6 @@ class SingleTransaction(models.Model):
                 }
             }
 
-    
     def _transaction_execution_amount(self):
         """
         Get the amount to execute for this record

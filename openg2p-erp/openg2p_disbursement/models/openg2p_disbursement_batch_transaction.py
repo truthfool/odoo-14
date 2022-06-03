@@ -140,7 +140,6 @@ class BatchTransaction(models.Model):
             "beneficiary_ids": beneficiary_ids,
         }
 
-    
     def _all_beneficiaries(self):
         self.all_beneficiaries = self.env["openg2p.disbursement.main"].search(
             [("batch_id", "=", self.id)]

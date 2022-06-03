@@ -28,7 +28,6 @@ class EnrollWizard(models.TransientModel):
     use_active_domain = fields.Boolean("Use active domain")
     auto_confirm = fields.Boolean("Auto Confirm Enrollments", default=True)
 
-    
     def action_apply(self):
         beneficiary_obj = self.env["openg2p.beneficiary"]
         self.ensure_one()

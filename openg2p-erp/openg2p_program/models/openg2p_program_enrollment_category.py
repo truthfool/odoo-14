@@ -21,9 +21,7 @@ class ProgramEnrollmentCategory(models.Model):
         default=10,
         required=True,
     )
-    company_id = fields.Many2one(
-        "res.company", default=lambda self: self.env.company
-    )
+    company_id = fields.Many2one("res.company", default=lambda self: self.env.company)
     color = fields.Integer(string="Color Index", default=lambda self: randint(1, 6))
 
     def api_json(self):

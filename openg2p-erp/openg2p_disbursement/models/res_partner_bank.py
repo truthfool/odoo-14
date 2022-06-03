@@ -28,9 +28,7 @@ def validate_mobile_money(number):
 class ResPartnerBank(models.Model):
     _name = "res.partner.bank"
     _rec_name = "name"
-    _inherit = [
-        "res.partner.bank",
-        "mail.thread"]
+    _inherit = ["res.partner.bank", "mail.thread"]
 
     _allow_unlink_domain = [("state", "=", "draft")]
 
@@ -71,7 +69,6 @@ class ResPartnerBank(models.Model):
             )
         return super(ResPartnerBank, self).create(vals)
 
-    
     def write(self, vals):
         if vals.get("acc_number"):
             for rec in self:
@@ -79,7 +76,6 @@ class ResPartnerBank(models.Model):
                     vals["acc_number"] = pretty_iban(normalize_iban(vals["acc_number"]))
         return super(ResPartnerBank, self).write(vals)
 
-    
     @api.depends("sanitized_acc_number", "acc_number", "bank_name")
     def _compute_name(self):
         for record in self:

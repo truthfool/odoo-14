@@ -26,7 +26,6 @@ class Beneficiary(models.Model):
         compute="_compute_program_enrollments_count", string="Enrollment Count"
     )
 
-    
     # @job
     def program_enroll(
         self,
@@ -68,7 +67,6 @@ class Beneficiary(models.Model):
         for beneficiary in self:
             beneficiary.program_enrollments_count = result.get(beneficiary.id, 0)
 
-    
     @api.depends("program_enrollment_ids", "program_enrollment_ids.state")
     def _compute_active_programs(self):
         for record in self:

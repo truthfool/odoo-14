@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <!-- <data> -->
+    <data>
 
         <!-- Stage -->
         <record id="openg2p_beneficiary_stage_act" model="ir.actions.act_window">
@@ -116,5 +116,5 @@
                 action="openg2p_registration_stage_act"
                 sequence="1"/>
 
-    <!-- </data> -->
+    </data>
 </odoo>

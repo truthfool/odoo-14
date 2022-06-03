@@ -33,5 +33,5 @@
     "installable": True,
     "auto_install": False,
     "registration": True,
-    # "post_init_hook": "post_init",
+    "post_init_hook": "post_init",
 }

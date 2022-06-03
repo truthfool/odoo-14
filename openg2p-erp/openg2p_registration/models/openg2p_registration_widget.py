@@ -25,7 +25,6 @@ class UpdateWizard(models.TransientModel):
         default=_default_stage_id,
     )
 
-    
     def update_stage(self):
         regd_obj = self.env["openg2p.registration"]
         regds = regd_obj.browse(self.env.context.get("active_ids"))
@@ -33,7 +32,6 @@ class UpdateWizard(models.TransientModel):
             regd.stage_id = self.stage_id
         return {"type": "ir.actions.act_window_close"}
 
-    
     def registration_to_beneficiary(self):
         regd_obj = self.env["openg2p.registration"]
         regds = regd_obj.browse(self.env.context.get("active_ids"))

@@ -88,11 +88,9 @@ class Program(models.Model):
         for program in self:
             program.category_count = len(program.category_ids)
 
-    
     def action_activate(self):
         self.write({"state": "active"})
 
-    
     def action_done(self):
         self.env["openg2p.program.enrollment"].search(
             ("program_id", "in", self.ids), ("state", "in", ("open", "draft"))

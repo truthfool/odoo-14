@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <!-- <data> -->
+    <data>
 
 
         <!-- Tag Form View -->
@@ -41,5 +41,5 @@
                 action="openg2p_registration_category_action"
                 sequence="2"/>
 
-    <!-- </data> -->
+    </data>
 </odoo>
