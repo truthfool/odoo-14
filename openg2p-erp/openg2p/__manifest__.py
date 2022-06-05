@@ -62,7 +62,7 @@
         "data/cron.xml",
     ],
     "demo": ["data/openg2p_demo.xml"],
-    "post_init_hook": "post_init",
+    # "post_init_hook": "post_init",
     "installable": True,
     "application": True,
     "auto_install": False,

@@ -526,12 +526,6 @@ class Registration(models.Model):
         state_id = (
             self.env["res.country.state"].search([("name", "=", state_name)])[0].id
         )
-        date_time_start = temp["start"]
-        date_time_end = temp["end"]
-
-        temp["start"] = datetime.strptime(date_time_start, '%Y-%m-%d %H:%M:%S')
-        temp["end"]= datetime.strptime(date_time_end, '%Y-%m-%d %H:%M:%S')
-        print(temp["start"],temp["end"])
 
         try:
             regd = self.create(
@@ -749,6 +743,9 @@ class Registration(models.Model):
         if vals.get("location_id") and not self._context.get("default_location_id"):
             self = self.with_context(default_location_id=vals.get("location_id"))
         if vals.get("user_id"):
+            # now = datetime.now()
+            # date_time_str = now.strftime("%Y-%m-%d %H:%M:%S")
+            # print(date_time_str)
             vals["date_open"] = fields.Datetime.now()
         if "stage_id" in vals:
             vals.update(self._onchange_stage_id_internal(vals.get("stage_id"))["value"])
