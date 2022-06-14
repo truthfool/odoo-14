@@ -74,7 +74,7 @@
             <field name="emergency_contact">Steven Jackson</field>
             <field name="emergency_phone">+23265765875</field>
             <field name="location_id" ref="location_0"/>
-            <field name="image" type="base64" file="openg2p/static/img/employee_han-image.jpg"/>
+<!--            <field name="image" type="base64" file="openg2p/static/img/employee_han-image.jpg"/>-->
         </record>
         <record id="openg2p_beneficiary_2" model="openg2p.beneficiary">
             <field name="firstname">Jacob</field>
@@ -97,7 +97,7 @@
             <field name="emergency_contact">Steven Jackson</field>
             <field name="emergency_phone">+23265765875</field>
             <field name="location_id" ref="location_2"/>
-            <field name="image" type="base64" file="openg2p/static/img/employee_hne-image.jpg"/>
+<!--            <field name="image" type="base64" file="openg2p/static/img/employee_hne-image.jpg"/>-->
         </record>
         <record id="openg2p_beneficiary_3" model="openg2p.beneficiary">
             <field name="firstname">Gianna</field>
@@ -120,7 +120,7 @@
             <field name="emergency_contact">Steven Jackson</field>
             <field name="emergency_phone">+23265765875</field>
             <field name="location_id" ref="location_3"/>
-            <field name="image" type="base64" file="openg2p/static/img/employee_jep-image.jpg"/>
+<!--            <field name="image" type="base64" file="openg2p/static/img/employee_jep-image.jpg"/>-->
         </record>
 
         <record id="openg2p_beneficiary_4" model="openg2p.beneficiary">
@@ -144,7 +144,7 @@
             <field name="emergency_contact">Steven Jackson</field>
             <field name="emergency_phone">+23265765875</field>
             <field name="location_id" ref="location_0"/>
-            <field name="image" type="base64" file="openg2p/static/img/employee_jgo-image.jpg"/>
+<!--            <field name="image" type="base64" file="openg2p/static/img/employee_jgo-image.jpg"/>-->
         </record>
 
         <record id="openg2p_beneficiary_10" model="openg2p.beneficiary">
@@ -167,7 +167,7 @@
             <field name="emergency_contact">Steven Jackson</field>
             <field name="emergency_phone">+23265765875</field>
             <field name="location_id" ref="location_2"/>
-            <field name="image" type="base64" file="openg2p/static/img/employee_jod-image.jpg"/>
+<!--            <field name="image" type="base64" file="openg2p/static/img/employee_jod-image.jpg"/>-->
         </record>
 
         <record id="openg2p_beneficiary_11" model="openg2p.beneficiary">
@@ -191,7 +191,7 @@
             <field name="emergency_contact">Steven Jackson</field>
             <field name="emergency_phone">+23265765875</field>
             <field name="location_id" ref="location_3"/>
-            <field name="image" type="base64" file="openg2p/static/img/employee_jog-image.jpg"/>
+<!--            <field name="image" type="base64" file="openg2p/static/img/employee_jog-image.jpg"/>-->
         </record>
 
         <record id="openg2p_beneficiary_18" model="openg2p.beneficiary">
@@ -214,7 +214,7 @@
             <field name="emergency_contact">Steven Jackson</field>
             <field name="emergency_phone">+23265765875</field>
             <field name="location_id" ref="location_0"/>
-            <field name="image" type="base64" file="openg2p/static/img/employee_jth-image.jpg"/>
+<!--            <field name="image" type="base64" file="openg2p/static/img/employee_jth-image.jpg"/>-->
         </record>
 
     </data>

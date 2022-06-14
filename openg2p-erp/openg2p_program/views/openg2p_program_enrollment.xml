@@ -162,10 +162,10 @@
                                     <field name="category_id" domain="[('program_id','=', program_id)]"/>
                                 </div>
                                 <div class="oe_kanban_bottom_right">
-                                    <img t-att-src="kanban_image('openg2p.beneficiary', 'image_medium', record.beneficiary_id.raw_value)"
-                                         t-att-title="record.beneficiary_id.value"
-                                         t-att-alt="record.beneficiary_id.value" width="24" height="24"
-                                         class="oe_kanban_avatar float-right"/>
+<!--                                    <img t-att-src="kanban_image('openg2p.beneficiary', 'image_medium', record.beneficiary_id.raw_value)"-->
+<!--                                         t-att-title="record.beneficiary_id.value"-->
+<!--                                         t-att-alt="record.beneficiary_id.value" width="24" height="24"-->
+<!--                                         class="oe_kanban_avatar float-right"/>-->
                                 </div>
                             </div>
                             <div class="oe_clear"></div>

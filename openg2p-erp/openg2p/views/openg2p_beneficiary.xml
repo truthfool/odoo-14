@@ -22,8 +22,6 @@
                 parent="menu_openg2p_root"
                 groups="group_openg2p_manager"
                 sequence="100"/>
-
-
         <!-- Beneficiary -->
         <record id="view_beneficiary_tree" model="ir.ui.view">
             <field name="name">openg2p.beneficiary.tree</field>
@@ -64,8 +62,8 @@
                                        options='{"terminology": "archive"}'/>
                             </button>
                         </div>
-                        <field name="image" widget='image' class="oe_avatar"
-                               options='{"preview_image": "image_medium", "size": [90, 90]}'/>
+<!--                        <field name="image" widget='image' class="oe_avatar"-->
+<!--                               options='{"preview_image": "image_medium", "size": [90, 90]}'/>-->
                         <div class="oe_title">
                             <h1>
                                 <div class="o_row">
@@ -217,8 +215,8 @@
                     <field name="country_id"/>
                     <field name="mobile"/>
                     <field name="category_id"/>
-                    <field name="image_small"/>
-                    <field name="image_medium"/>
+<!--                    <field name="image_small"/>-->
+<!--                    <field name="image_medium"/>-->
                     <field name="location_id"/>
                     <field name="ref"/>
                     <templates>
@@ -227,22 +225,22 @@
                             <field name="category_id" select="multi" icon="fa-tags"/>
                         </searchpanel>
                         <t t-name="kanban-box">
-                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
-                                <t t-if="record.image_small.raw_value">
-                                    <!-- Medium employee's picture -->
-                                    <div class="o_kanban_image_fill_left d-none d-md-block"
-                                         t-attf-style="background-image: url(#{kanban_image('openg2p.beneficiary', 'image_medium', record.id.raw_value)})"
-                                         role="img"/>
-                                    <!-- Employee's picture optimized for mobile -->
-                                    <div class="o_kanban_image d-md-none rounded-circle"
-                                         t-attf-style="background-image: url(#{kanban_image('openg2p.beneficiary', 'image_small', record.id.raw_value)})"
-                                         role="img"/>
-                                </t>
-                                <t t-else="">
-                                    <img class="o_kanban_image" alt="Avatar"
-                                         t-att-src='_s + "/openg2p/static/src/img/default_image.png"'/>
-                                </t>
-
+<!--                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill">-->
+<!--                                <t t-if="record.image_small.raw_value">-->
+<!--                                    &lt;!&ndash; Medium employee's picture &ndash;&gt;-->
+<!--                                    <div class="o_kanban_image_fill_left d-none d-md-block"-->
+<!--                                         t-attf-style="background-image: url(#{kanban_image('openg2p.beneficiary', 'image_medium', record.id.raw_value)})"-->
+<!--                                         role="img"/>-->
+<!--                                    &lt;!&ndash; Employee's picture optimized for mobile &ndash;&gt;-->
+<!--                                    <div class="o_kanban_image d-md-none rounded-circle"-->
+<!--                                         t-attf-style="background-image: url(#{kanban_image('openg2p.beneficiary', 'image_small', record.id.raw_value)})"-->
+<!--                                         role="img"/>-->
+<!--                                </t>-->
+<!--                                <t t-else="">-->
+<!--                                    <img class="o_kanban_image" alt="Avatar"-->
+<!--                                         t-att-src='_s + "/openg2p/static/src/img/default_image.png"'/>-->
+<!--                                </t>-->
+                            <div>
                                 <div class="oe_kanban_details">
                                     <div class="o_kanban_record_top">
                                         <div class="o_kanban_record_headings">

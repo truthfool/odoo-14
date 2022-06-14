@@ -28,8 +28,8 @@ def _lang_get(self):
 
 
 _PARTNER_FIELDS = [
-    "firstname",
-    "lastname",
+    # "firstname",
+    # "lastname",
     "street",
     "street2",
     "zip",
@@ -54,15 +54,6 @@ class Beneficiary(models.Model):
         "image.mixin"
         # "generic.mixin.no.unlink",
     ]
-
-    # @api.model
-    # def _default_image(self):
-    #     image_path = get_module_resource(
-    #         "openg2p", "static/src/img", "default_image.png"
-    #     )
-    #     return tools.image_resize_image_big(
-    #         base64.b64encode(open(image_path, "rb").read())
-    #     )
 
     partner_id = fields.Many2one(
         "res.partner",
@@ -227,27 +218,27 @@ class Beneficiary(models.Model):
     emergency_contact = fields.Char("Emergency Contact", tracking=True)
     emergency_phone = fields.Char("Emergency Phone", tracking=True)
     # image: all image fields are base64 encoded and PIL-supported
-    image = fields.Image(
-        "Image",
-        default=True,
-        tracking=True,
-        attachment=True,
-        help="This field holds the image used as avatar for this beneficiary, limited to 1024x1024px",
-    )
-    image_medium = fields.Binary(
-        "Medium-sized image",
-        attachment=True,
-        help="Medium-sized image of this beneficiary. It is automatically "
-        "resized as a 128x128px image, with aspect ratio preserved. "
-        "Use this field in form views or some kanban views.",
-    )
-    image_small = fields.Binary(
-        "Small-sized image",
-        attachment=True,
-        help="Small-sized image of this beneficiary. It is automatically "
-        "resized as a 64x64px image, with aspect ratio preserved. "
-        "Use this field anywhere a small image is required.",
-    )
+    # image = fields.Image(
+    #     "Image",
+    #     default=True,
+    #     tracking=True,
+    #     attachment=True,
+    #     help="This field holds the image used as avatar for this beneficiary, limited to 1024x1024px",
+    # )
+    # image_medium = fields.Binary(
+    #     "Medium-sized image",
+    #     attachment=True,
+    #     help="Medium-sized image of this beneficiary. It is automatically "
+    #          "resized as a 128x128px image, with aspect ratio preserved. "
+    #          "Use this field in form views or some kanban views.",
+    # )
+    # image_small = fields.Binary(
+    #     "Small-sized image",
+    #     attachment=True,
+    #     help="Small-sized image of this beneficiary. It is automatically "
+    #          "resized as a 64x64px image, with aspect ratio preserved. "
+    #          "Use this field anywhere a small image is required.",
+    # )
     location_id = fields.Many2one(
         "openg2p.location",
         "Location",
@@ -288,7 +279,7 @@ class Beneficiary(models.Model):
         index=True,
         context={"active_test": False},
         help="Duplicate records that have been merged with this."
-        " Primary function is to allow to reference of merged records ",
+             " Primary function is to allow to reference of merged records ",
     )
 
     # example for filtering on org custom fields
@@ -674,11 +665,15 @@ class Beneficiary(models.Model):
     def _onchange_phone_validation(self):
         if self.phone:
             self.phone = self.phone_format(self.phone)
+        else:
+            self.phone=""
 
     @api.onchange("mobile", "country_id")
     def _onchange_mobile_validation(self):
         if self.mobile:
             self.mobile = self.phone_format(self.mobile)
+        else:
+            self.mobile=""
 
     def _partner_create(self, vals):
         partner_vals = {}
@@ -703,16 +698,15 @@ class Beneficiary(models.Model):
     def create(self, vals):
         if not vals.get("ref"):
             vals["ref"] = self._generate_ref()
-        tools.image_resize_images(vals)
+        # tools.image_resize_images(vals)
         if not vals.get("phone") and vals.get("mobile"):
             vals["phone"] = vals.get("mobile")
         self._partner_create(vals)
         res = super(Beneficiary, self).create(vals)
         return res
 
-    
     def write(self, vals):
-        tools.image_resize_images(vals)
+        # tools.image_resize_images(vals)
         res = super(Beneficiary, self).write(vals)
         for i in self:
             i._partner_update(vals)
@@ -720,13 +714,21 @@ class Beneficiary(models.Model):
 
     @api.onchange("country_id")
     def _onchange_country_id(self):
+        state_id = (
+            self.env["res.country.state"].search([("name", "=", "Freetown")])[0].id
+        )
         if self.country_id and self.country_id != self.state_id.country_id:
             self.state_id = False
+        else:
+            self.state_id=state_id
 
     @api.onchange("state_id")
     def _onchange_state(self):
+        country_id = self.env["res.country"].search([("name", "=", "Sierra Leone")])[0].id
         if self.state_id.country_id:
             self.country_id = self.state_id.country_id
+        else:
+            self.country_id=country_id
 
     @api.depends("name", "email")
     def _compute_email_formatted(self):
@@ -748,7 +750,6 @@ class Beneficiary(models.Model):
         """Returns the list of address fields usable to format addresses."""
         return self._address_fields()
 
-    
     def update_address(self, vals):
         addr_vals = {key: vals[key] for key in self._address_fields() if key in vals}
         if addr_vals:
@@ -768,7 +769,6 @@ class Beneficiary(models.Model):
         for beneficiary in self:
             beneficiary.display_name = names.get(beneficiary.id)
 
-    
     @api.depends("birthday")
     def _compute_age(self):
         for record in self:
@@ -791,7 +791,6 @@ class Beneficiary(models.Model):
         for rec in self:
             rec.search_no_category_id = False
 
-    
     @api.depends(
         "street",
         "street2",
@@ -807,7 +806,7 @@ class Beneficiary(models.Model):
     )
     def _compute_display_address(self):
         for rec in self:
-            rec.display_address = self._display_address()
+            rec.display_address = rec._display_address()
 
     @api.model
     def _get_default_address_format(self):
@@ -819,7 +818,6 @@ class Beneficiary(models.Model):
     def _get_address_format(self):
         return self.country_id.address_format or self._get_default_address_format()
 
-    
     def _display_address(self):
         """
         The purpose of this function is to build and return an address formatted accordingly to the
@@ -884,11 +882,9 @@ class Beneficiary(models.Model):
                         "state_id"
                     ] = state.id  # replace state or remove it if not found
 
-    
     def _get_country_name(self):
         return self.country_id.name or ""
 
-    
     def name_get(self):
         return [(record.id, record.name + " (" + record.ref + ")") for record in self]
 
@@ -901,7 +897,6 @@ class Beneficiary(models.Model):
             }
         ]
 
-    
     @api.depends("identities", "identities.name", "identities.category_id.code.")
     def _compute_identification(self, field_name, category_code):
         """Compute a field that indicates a certain ID type.
@@ -936,12 +931,13 @@ class Beneficiary(models.Model):
             identities = record.identities.filtered(
                 lambda r: r.category_id.code == category_code
             )
-            if not identities:
-                continue
-            value = identities[0].name
-            record[field_name] = value
+            if identities:
+                value = identities[0].name
+                record[field_name] = value
+            else:
+                value = None
+                record[field_name] = value
 
-    
     def _inverse_identification(self, field_name, category_code):
         """Inverse for an identification field.
 
@@ -1097,7 +1093,7 @@ class Beneficiary(models.Model):
 
     @api.model
     def matches(
-        self, query, mode=MATCH_MODE_NORMAL, stop_on_first=False, threshold=None
+            self, query, mode=MATCH_MODE_NORMAL, stop_on_first=False, threshold=None
     ):
         """
         Given an query find recordset that is strongly similar
@@ -1130,7 +1126,6 @@ class Beneficiary(models.Model):
         """
         pass
 
-    
     def merge(self, merges, copy_data={}):
         """
         @param merges - A recordset of beneficiaries we want to merge
